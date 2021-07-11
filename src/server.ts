@@ -8,6 +8,7 @@ import json from 'koa-json';
 import bodyParser from 'koa-bodyparser';
 import DB from './db';
 import HELMET from 'koa-helmet';
+import MIDDLEWARE from './middleware';
 
 class Server {
   protected app: KOA;
@@ -20,20 +21,27 @@ class Server {
     this.config = config;
   };
 
+  protected use (middleware: KOA.Middleware): Server {
+    this.app.use(middleware);
+    return this;
+  }
+
   protected router ():Server {
     const Router = ROUTER.initiate();
-    this.app.use(Router.router.middleware());
+    this.use(Router.router.middleware());
     return this;
   };
 
   protected middleware ():Server {
-    this.app.use(MORGAN('combined'));
-    this.app.use(HELMET({
+    this.use(MIDDLEWARE.send);
+    this.use(MIDDLEWARE.onError);
+    this.use(MORGAN('combined'));
+    this.use(HELMET({
       contentSecurityPolicy: false
     }));
-    this.app.use(CORS());
-    this.app.use(json());
-    this.app.use(bodyParser());
+    this.use(CORS());
+    this.use(json());
+    this.use(bodyParser());
     return this;
   }
 

@@ -1,7 +1,6 @@
-import { Responses } from './../types';
+import { ModifiedContext, Responses } from './../types';
 
 import PurchaseModel, {PurchaseDocument, PurchaseType} from './../models/purchase';
-import { Context } from 'koa';
 /**
  * @param fecha - A valid Date that has already been validated by JOI
  * @param cantidad - A valid number that has already been validated by JOI
@@ -11,30 +10,27 @@ import { Context } from 'koa';
 type InputCreateBodyType = {fecha: Date, cantidad: number, idProducto: number, nombreProducto: string};
 
 class PurchaseController {
-  public static create = async (ctx: Context) => {
+  public static create = async (ctx: ModifiedContext) => {
     const body:InputCreateBodyType = ctx.request.body;
     const createUser:PurchaseDocument|null  = await PurchaseModel.create(body).catch( err => null);
 
     if (createUser) {
       let response:PurchaseType = createUser.toNormalization();
-      ctx.status = 201;
-      ctx.body = response;
+      ctx.status
+      return ctx.send(201, response);
     } else {
-      ctx.status = 400;
-      ctx.body = Responses.CANT_CREATE_PURCHASE;
+      return ctx.send(400, Responses.CANT_CREATE_PURCHASE);
     }
   };
 
-  public static read = async (ctx: Context) => {
+  public static read = async (ctx: ModifiedContext) => {
     const purchase:PurchaseDocument|null = await PurchaseModel.findById(ctx.state.purchase.id);
 
     if (purchase) {
       let response:PurchaseType = purchase.toNormalization();
-      ctx.status = 200;
-      ctx.body = response;
+      return ctx.send(200, response);
     } else {
-      ctx.status = 400;
-      ctx.body = Responses.SOMETHING_WENT_WRONG;
+      return ctx.send(400, Responses.SOMETHING_WENT_WRONG);
     }
   };
 

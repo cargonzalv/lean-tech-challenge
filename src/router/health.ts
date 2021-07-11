@@ -17,7 +17,7 @@ class HealthRouter {
             data: JOI.object({
               status: JOI.string(),
               version: JOI.string(),
-              timestamp:JOI.string().isoDate(),
+              timestamp: JOI.string().isoDate(),
               uptime: JOI.number()
             })
           }).options({stripUnknown: true})

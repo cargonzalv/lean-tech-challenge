@@ -39,7 +39,7 @@ class Helper {
       412: {
         body: {
           code: 412,
-          error: JOI.array().items(JOI.object()).allow([])
+          error: JOI.array().items(JOI.object()).allow()
         }
       }
     };

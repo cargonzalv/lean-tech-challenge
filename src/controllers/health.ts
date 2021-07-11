@@ -9,13 +9,12 @@ enum STATUS {
   
 class Health {
   public static read = async (ctx: ModifiedContext) => {
-    ctx.status = 200;
-    ctx.body = {
+    return ctx.send(200, {
       status: STATUS.PASS,
       version,
       timestamp: (new Date()).toISOString(),
       uptime: process.uptime()
-    };
+    });
   };
 };
 

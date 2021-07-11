@@ -35,6 +35,7 @@ enum Responses {
  * Extends the base context with KWT, Respond and State
 */
 interface ModifiedContext extends Context {
+  send: (status: number, body: object|string) => ModifiedContext
   state: ConfigStateType
 }
 
