@@ -33,7 +33,7 @@ class SellController {
 
           processedSells += quantityToProcess;
         }
-        const createSell: SellDocument | null = await SellModel.create(body).catch((err) => null);
+        const createSell: SellDocument | null = await SellModel.create(body).catch(() => null);
         if (createSell) {
           const response: SellType = createSell.toNormalization();
           return ctx.send(201, response);
