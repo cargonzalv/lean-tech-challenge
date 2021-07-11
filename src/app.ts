@@ -1,23 +1,26 @@
-import * as Koa from 'koa';
-import * as bodyParser from 'koa-bodyparser';
-import * as cors from '@koa/cors';
-import * as helmet from 'koa-helmet';
-import * as json from 'koa-json';
-import * as logger from 'koa-logger';
+require('dotenv').config();
 import 'reflect-metadata';
-import router from './server';
+import {ConfigServerType} from './types/';
+import SERVER from './server';
+const {env: ENV} = process;
+const {exec} = require('child_process');
 
-const app = new Koa();
-const port = process.env.PORT || 3000;
+process.on('unhandledRejection', (err) => console.error(err));
+process.on('uncaughtException',  (err) => console.error(err.stack || err));
+process.on('exit', () => exec('docker compose stop'));
 
-app.use(helmet());
-app.use(cors());
-app.use(json());
-app.use(logger());
-app.use(bodyParser());
 
-app.use(router.routes()).use(router.allowedMethods());
+class Services {
+  public static server = () => {
 
-app.listen(port, () => {
-  console.log(`🚀 App listening on the port ${port}`);
-});
+    let CONFIG:ConfigServerType = {
+      port: (ENV.PORT ? +ENV.PORT : 3000),
+      mongo_uri: ENV.MONGO_URI || 'mongodb://localhost:27017/leantech'
+    };
+  
+    const Server = new SERVER(CONFIG);
+    return Server.initiate().listen();
+  };
+};
+
+export default Services.server();
