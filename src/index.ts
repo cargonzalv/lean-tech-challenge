@@ -1,18 +1,12 @@
-require('dotenv').config();
+import dotenv from 'dotenv';
 import 'reflect-metadata';
 import { ConfigServerType } from './types/';
 import SERVER from './server';
+dotenv.config();
 const { env: ENV } = process;
-const { exec } = require('child_process');
 
 process.on('unhandledRejection', (err) => console.error(err));
 process.on('uncaughtException', (err) => console.error(err.stack || err));
-['SIGINT', 'SIGTERM', 'SIGQUIT'].forEach((signal) => process.on(signal, () => {}));
-// process.on('SIGINT', () => {
-//   exec('docker compose stop', () => {
-//     process.exit(1);
-//   })
-// });
 
 class Services {
   public static server = () => {
