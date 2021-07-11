@@ -1,4 +1,4 @@
-import { Middleware as KoaMiddleware, BaseContext} from 'koa';
+import { Context } from 'koa';
 
 /**
  * @remarks
@@ -9,14 +9,14 @@ import { Middleware as KoaMiddleware, BaseContext} from 'koa';
 */
 type ConfigServerType    = { port: number, mongo_uri: string };
 
-type UserStateType       = { id: string };
+type PurchaseStateType       = { id: string };
 
 /**
  * @remarks
  * Extends ctx.state.user type to the base context
 */
 type ConfigStateType     = {
-  user: UserStateType|null
+  purchase: PurchaseStateType|null
 };
 
 /**
@@ -34,8 +34,7 @@ enum Responses {
  * @remarks
  * Extends the base context with KWT, Respond and State
 */
-interface ModifiedContext extends BaseContext {
-  respond: (status: number, body: object|string) => Function
+interface ModifiedContext extends Context {
   state: ConfigStateType
 }
 

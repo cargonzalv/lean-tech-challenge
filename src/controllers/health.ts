@@ -1,5 +1,5 @@
 import {version} from './../../package.json';
-import { BaseContext } from 'koa';
+import { ModifiedContext } from '../types';
 
 enum STATUS {
   PASS = 'pass',
@@ -8,14 +8,14 @@ enum STATUS {
 }
   
 class Health {
-  public static read = async (ctx: BaseContext) => {
+  public static read = async (ctx: ModifiedContext) => {
     ctx.status = 200;
     ctx.body = {
       status: STATUS.PASS,
       version,
       timestamp: (new Date()).toISOString(),
       uptime: process.uptime()
-    }
+    };
   };
 };
 

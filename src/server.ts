@@ -7,9 +7,6 @@ import ROUTER from './router';
 import json from 'koa-json';
 import bodyParser from 'koa-bodyparser';
 import DB from './db';
-import mount from 'koa-mount';
-import graphqlHTTP from 'koa-graphql';
-import schema from './graphql/schema';
 import HELMET from 'koa-helmet';
 
 class Server {
@@ -25,10 +22,7 @@ class Server {
 
   protected router ():Server {
     const Router = ROUTER.initiate();
-    this.app.use(mount('/graphql', graphqlHTTP({
-      schema: schema,
-      graphiql: true
-    })))
+    this.app.use(Router.router.middleware());
     return this;
   };
 
