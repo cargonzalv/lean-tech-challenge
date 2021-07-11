@@ -34,6 +34,17 @@ class PurchaseController {
     }
   };
 
+  public static getAll = async (ctx: ModifiedContext) => {
+    const purchases:PurchaseDocument[]|null = await PurchaseModel.find();
+
+    if (purchases) {
+      let response:PurchaseType[] = purchases.map((p) => p.toNormalization());
+      return ctx.send(200, response);
+    } else {
+      return ctx.send(400, Responses.SOMETHING_WENT_WRONG);
+    }
+  };
+
 };
 
 export default PurchaseController;

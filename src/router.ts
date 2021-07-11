@@ -9,6 +9,7 @@ class Router {
 
     router.route(HEALTH_ROUTES.read);
 
+    router.route(PURCHASE_ROUTES.getAll);
     router.route(PURCHASE_ROUTES.read);
     router.route(PURCHASE_ROUTES.create);
 

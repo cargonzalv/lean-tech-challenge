@@ -56,6 +56,22 @@ class PurchaseRouter {
     },
     handler: [HELPER.validation, PURCHASE_CONTROLLER.read]
   });
+  public static getAll:Spec = ({
+    method: HELPER.methods.GET,
+    path: '/purchases',
+    validate: {
+      continueOnError: true,
+      output: Object.assign({}, HELPER.errorResponse(403), HELPER.errorResponse(400), HELPER.validationErrorResponse(), {
+        200: {
+          body: Joi.object({
+            code: 200,
+            data: Joi.array().items(Joi.object(PurchaseRouter.userOutput))
+          }).options({stripUnknown: true})
+        }
+      })
+    },
+    handler: [HELPER.validation, PURCHASE_CONTROLLER.getAll]
+  });
 };
 
 export default PurchaseRouter;
