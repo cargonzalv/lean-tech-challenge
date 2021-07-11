@@ -52,6 +52,7 @@ class Helper {
           code,
           error: JOI.object({
             message: JOI.string(),
+            detail: JOI.string(),
           }),
         },
       },

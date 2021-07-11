@@ -21,7 +21,7 @@ class SellRouter {
       type: HELPER.contentType.JSON,
       body: Joi.object({
         fecha: Joi.date().max('now').required(),
-        cantidad: Joi.number().required(),
+        cantidad: Joi.number().min(1).required(),
         idProducto: Joi.number().required(),
         nombreProducto: Joi.string().min(2).max(HELPER.defaults.length).required(),
       }).options({ stripUnknown: true }),

@@ -26,7 +26,7 @@ enum Responses {
  * Extends the base context with send
  */
 interface ModifiedContext extends Context {
-  send: (status: number, body: object | string) => ModifiedContext;
+  send: (status: number, body: object | string, detail?: string) => ModifiedContext;
 }
 
 export { ConfigServerType, Responses, ModifiedContext };

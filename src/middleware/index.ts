@@ -12,7 +12,7 @@ class Middleware {
      * @param status - The http code
      * @param body - An Object or string input depending on the http code
      */
-    ctx.send = (status: number, body: object | string) => {
+    ctx.send = (status: number, body: object | string, detail?: string) => {
       ctx.status = status;
       let error = false;
 
@@ -23,7 +23,7 @@ class Middleware {
       if (error === true) {
         ctx.body = {
           code: ctx.status,
-          error: Array.isArray(body) ? body : { message: body },
+          error: Array.isArray(body) ? body : { message: body, detail },
         };
       } else {
         ctx.body = {
@@ -43,11 +43,11 @@ class Middleware {
       await next();
     } catch (err) {
       console.error(err.stack || err);
-      ctx.send(
-        500,
-        err?._original?.map((valErr) => "'" + valErr.message.replace(/\"\s/g, "' ").slice(1)).join(', ') ||
-          Responses.INTERNAL_ERROR,
-      );
+      let message = Responses.INTERNAL_ERROR;
+      if (Array.isArray(err?._original)) {
+        message = err?._original?.map((valErr) => "'" + valErr.message.replace(/\"\s/g, "' ").slice(1)).join(', ');
+      }
+      ctx.send(500, message);
     }
   };
 }

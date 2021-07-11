@@ -12,14 +12,20 @@ type InputCreateBodyType = { fecha: Date; cantidad: number; idProducto: number; 
 class PurchaseController {
   public static create = async (ctx: ModifiedContext) => {
     const body: InputCreateBodyType = ctx.request.body;
-    const createUser: PurchaseDocument | null = await PurchaseModel.create(body).catch((err) => null);
+    let detail = '';
+    const createPurchase: PurchaseDocument | null = await PurchaseModel.create(body).catch((err) => {
+      if (err.stack) {
+        console.error(err.stack);
+        detail = err.stack.split('\n')[0];
+      }
+      return null;
+    });
 
-    if (createUser) {
-      const response: PurchaseType = createUser.toNormalization();
-      ctx.status;
+    if (createPurchase) {
+      const response: PurchaseType = createPurchase.toNormalization();
       return ctx.send(201, response);
     } else {
-      return ctx.send(400, Responses.CANT_CREATE_PURCHASE);
+      return ctx.send(400, Responses.CANT_CREATE_PURCHASE, detail);
     }
   };
 
@@ -45,15 +51,37 @@ class PurchaseController {
     }
   };
 
-  public static findByProduct = async (ctx: ModifiedContext) => {
-    const purchase: PurchaseDocument | null = await PurchaseModel.findOne({ product: ctx.request.params.productId });
-
-    if (purchase) {
-      const response: PurchaseType = purchase.toNormalization();
-      return ctx.send(200, response);
-    } else {
-      return ctx.send(400, Responses.OBJECT_NOT_FOUND);
+  public static findByProduct = async (productId: number, fecha: Date) => {
+    try {
+      const purchase = await PurchaseModel.find({
+        idProducto: productId,
+        fecha: {
+          $lte: fecha,
+        },
+        cantidad: {
+          $gte: 0,
+        },
+      }).sort({ fecha: 1 });
+      const response: PurchaseType[] = purchase?.map((p) => p.toNormalization());
+      return response;
+    } catch (err) {
+      return null;
     }
+  };
+
+  public static updatePurchase = async (purchaseId: string, newPurchase: InputCreateBodyType) => {
+    const updatePurchase: PurchaseDocument | null = await PurchaseModel.findByIdAndUpdate(
+      purchaseId,
+      newPurchase,
+    ).catch((err) => {
+      console.error(err);
+      return null;
+    });
+
+    console.log(updatePurchase);
+
+    const response: PurchaseType = updatePurchase?.toNormalization();
+    return response;
   };
 }
 
