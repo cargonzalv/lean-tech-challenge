@@ -44,7 +44,7 @@ class Middleware {
       await next();
     } catch (err) {
       console.error(err.stack || err);
-      ctx.send(500, Responses.INTERNAL_ERROR);
+      ctx.send(500, err?._original?.map((valErr) => "'" + valErr.message.replace(/\"\s/g, '\' ').slice(1)).join(', ') || Responses.INTERNAL_ERROR);
     }
   };
 };

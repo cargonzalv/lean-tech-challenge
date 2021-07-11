@@ -7,18 +7,7 @@ import { Context } from 'koa';
  * @param port - A Port to run the server on
  * @param mongo_uri - The mongo uri mongo://127.0.0.1:27017/test
 */
-type ConfigServerType    = { port: number, mongo_uri: string };
-
-type PurchaseStateType       = { id: string };
-
-/**
- * @remarks
- * Extends ctx.state.user type to the base context
-*/
-type ConfigStateType     = {
-  purchase: PurchaseStateType|null
-};
-
+type ConfigServerType        = { port: number, mongo_uri: string };
 /**
  * @remarks
  * Response options
@@ -26,17 +15,18 @@ type ConfigStateType     = {
 enum Responses {
   NOT_FOUND            = 'Not Found',
   CANT_CREATE_PURCHASE = 'Unable to create purchase',
+  CANT_CREATE_SELL     = 'Unable to create sell',
   INTERNAL_ERROR       = 'An internal server has error occured',
-  SOMETHING_WENT_WRONG = 'Something went wrong'
+  SOMETHING_WENT_WRONG = 'Something went wrong',
+  OBJECT_NOT_FOUND     = 'Object was not found'
 };
 
 /**
  * @remarks
- * Extends the base context with KWT, Respond and State
+ * Extends the base context with send
 */
 interface ModifiedContext extends Context {
   send: (status: number, body: object|string) => ModifiedContext
-  state: ConfigStateType
 }
 
 export {
