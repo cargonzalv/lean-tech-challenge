@@ -2,7 +2,6 @@ import { ModifiedContext, Responses } from '../types';
 
 import SellModel, { SellDocument, SellType } from '../models/sell';
 import PurchaseController from './purchase';
-import { PurchaseType } from 'models/purchase';
 /**
  * @param fecha - A valid Date that has already been validated by JOI
  * @param cantidad - A valid number that has already been validated by JOI
@@ -18,10 +17,11 @@ class SellController {
     const body: InputCreateBodyType = ctx.request.body;
     const purchases = await PurchaseController.findByProduct(productId, body.fecha);
     const totalInventory = purchases.reduce((accum, p) => (accum += p.cantidad), 0);
-    console.log(purchases);
+    //We make sure we have sufficient total purchase orders to be able to sell them
     if (purchases && totalInventory >= body.cantidad) {
       let processedSells = 0;
       try {
+        // We loop through all possible purchase orders, from oldest to newest (FIFO) and process them
         for (let i = 0; i < purchases.length && body.cantidad > processedSells; i++) {
           const purchase = purchases[i];
           const remainingSells = body.cantidad - processedSells;
@@ -29,10 +29,9 @@ class SellController {
           await PurchaseController.updatePurchase(purchase.id, {
             ...purchase,
             cantidad: purchase.cantidad - quantityToProcess,
-          }).catch((err) => null);
+          }).catch(() => null);
 
           processedSells += quantityToProcess;
-          console.log(processedSells);
         }
         const createSell: SellDocument | null = await SellModel.create(body).catch((err) => null);
         if (createSell) {

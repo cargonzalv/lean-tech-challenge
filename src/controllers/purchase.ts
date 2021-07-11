@@ -56,7 +56,7 @@ class PurchaseController {
       const purchase = await PurchaseModel.find({
         idProducto: productId,
         fecha: {
-          $lte: fecha,
+          $lte: fecha, // We just care about purchase orders registered before or on the sell order date
         },
         cantidad: {
           $gte: 0,
