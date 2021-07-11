@@ -26,9 +26,9 @@ const sellSchema = new mongoose.Schema({
 }, { timestamps: false });
 
 const toNormalization: toNormalizationFunction = function () {
-    let _sellObject: SellDocument = this.toObject();
+    const _sellObject: SellDocument = this.toObject();
 
-    let SellObject: SellType = {
+    const SellObject: SellType = {
         id: _sellObject._id.toString(),
         fecha: _sellObject.fecha,
         cantidad: _sellObject.cantidad,

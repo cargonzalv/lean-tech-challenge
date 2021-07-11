@@ -15,7 +15,7 @@ class SellController {
     const createUser:SellDocument|null  = await SellModel.create(body).catch( err => null);
 
     if (createUser) {
-      let response:SellType = createUser.toNormalization();
+      const response:SellType = createUser.toNormalization();
       ctx.status
       return ctx.send(201, response);
     } else {
@@ -27,7 +27,7 @@ class SellController {
     const sell:SellDocument|null = await SellModel.findById(ctx.request.params.id);
 
     if (sell) {
-      let response:SellType = sell.toNormalization();
+      const response:SellType = sell.toNormalization();
       return ctx.send(200, response);
     } else {
       return ctx.send(400, Responses.OBJECT_NOT_FOUND);
@@ -38,13 +38,13 @@ class SellController {
     const sells:SellDocument[]|null = await SellModel.find();
 
     if (sells) {
-      let response:SellType[] = sells.map((p) => p.toNormalization());
+      const response:SellType[] = sells.map((p) => p.toNormalization());
       return ctx.send(200, response);
     } else {
       return ctx.send(400, Responses.SOMETHING_WENT_WRONG);
     }
   };
 
-};
+}
 
 export default SellController;

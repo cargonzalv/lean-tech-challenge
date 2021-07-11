@@ -26,9 +26,9 @@ const purchaseSchema = new mongoose.Schema({
 }, { timestamps: false });
 
 const toNormalization: toNormalizationFunction = function () {
-    let _purchaseObject: PurchaseDocument = this.toObject();
+    const _purchaseObject: PurchaseDocument = this.toObject();
 
-    let PurchaseObject: PurchaseType = {
+    const PurchaseObject: PurchaseType = {
         id: _purchaseObject._id.toString(),
         fecha: _purchaseObject.fecha,
         cantidad: _purchaseObject.cantidad,

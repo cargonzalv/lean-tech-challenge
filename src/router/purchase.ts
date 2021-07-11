@@ -72,6 +72,6 @@ class PurchaseRouter {
     },
     handler: [HELPER.validation, PURCHASE_CONTROLLER.getAll]
   });
-};
+}
 
 export default PurchaseRouter;

@@ -15,7 +15,7 @@ class PurchaseController {
     const createUser:PurchaseDocument|null  = await PurchaseModel.create(body).catch( err => null);
 
     if (createUser) {
-      let response:PurchaseType = createUser.toNormalization();
+      const response:PurchaseType = createUser.toNormalization();
       ctx.status
       return ctx.send(201, response);
     } else {
@@ -27,7 +27,7 @@ class PurchaseController {
     const purchase:PurchaseDocument|null = await PurchaseModel.findById(ctx.request.params.id);
 
     if (purchase) {
-      let response:PurchaseType = purchase.toNormalization();
+      const response:PurchaseType = purchase.toNormalization();
       return ctx.send(200, response);
     } else {
       return ctx.send(400, Responses.OBJECT_NOT_FOUND);
@@ -38,13 +38,13 @@ class PurchaseController {
     const purchases:PurchaseDocument[]|null = await PurchaseModel.find();
 
     if (purchases) {
-      let response:PurchaseType[] = purchases.map((p) => p.toNormalization());
+      const response:PurchaseType[] = purchases.map((p) => p.toNormalization());
       return ctx.send(200, response);
     } else {
       return ctx.send(400, Responses.SOMETHING_WENT_WRONG);
     }
   };
 
-};
+}
 
 export default PurchaseController;

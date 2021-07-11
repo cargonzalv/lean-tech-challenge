@@ -6,11 +6,11 @@ enum methods {
   GET = 'get',
   DELETE = 'delete',
   PUT = 'put'
-};
+}
 
 enum contentType {
   JSON = 'json'
-};
+}
 
 type defaultObject = { length: number };
 
@@ -25,8 +25,8 @@ class Helper {
   public static mongoObjectRegEx = /^[a-f\d]{24}$/i;
   public static validation  = async (ctx: Context, next: Function) => {
     if (ctx.invalid) {
-      let body:{details: Array<object>}         = ctx.invalid.body || ctx.invalid.query || ctx.invalid.params;  
-      let response:Array<object|undefined|null> = body && body.details ? body.details : [];
+      const body:{details: Array<object>}         = ctx.invalid.body || ctx.invalid.query || ctx.invalid.params;  
+      const response:Array<object|undefined|null> = body && body.details ? body.details : [];
       ctx.status = 412;
       ctx.body = response;
     } else {
@@ -43,7 +43,7 @@ class Helper {
         }
       }
     };
-  };
+  }
 
   public static errorResponse (code: number) {
     return {
@@ -56,7 +56,7 @@ class Helper {
         }
       }
     };
-  };
-};
+  }
+}
 
 export default Helper;

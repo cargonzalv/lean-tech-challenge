@@ -25,6 +25,6 @@ class HealthRouter {
       }
     }
   });
-};
+}
 
 export default HealthRouter;

@@ -16,6 +16,6 @@ class Health {
       uptime: process.uptime()
     });
   };
-};
+}
 
 export default Health;

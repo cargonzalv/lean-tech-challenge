@@ -19,7 +19,7 @@ class Router {
     router.route(SELL_ROUTES.create);
 
     return {router};
-  };
-};
+  }
+}
 
 export default Router;

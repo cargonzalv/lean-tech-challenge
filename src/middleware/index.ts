@@ -15,7 +15,7 @@ class Middleware {
     */
     ctx.send = (status: number, body: object|string) => {
       ctx.status        = status;
-      let error:boolean = false;
+      let error = false;
 
       if (status >= 299 || status < 200) {
         error = true;
@@ -47,6 +47,6 @@ class Middleware {
       ctx.send(500, err?._original?.map((valErr) => "'" + valErr.message.replace(/\"\s/g, '\' ').slice(1)).join(', ') || Responses.INTERNAL_ERROR);
     }
   };
-};
+}
 
 export default Middleware;

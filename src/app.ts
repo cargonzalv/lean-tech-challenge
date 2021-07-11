@@ -7,13 +7,17 @@ const {exec} = require('child_process');
 
 process.on('unhandledRejection', (err) => console.error(err));
 process.on('uncaughtException',  (err) => console.error(err.stack || err));
-process.on('exit', () => exec('docker compose stop'));
+process.on('SIGINT', () => {
+  exec('docker compose stop', () => {
+    process.exit(1);
+  })
+});
 
 
 class Services {
   public static server = () => {
 
-    let CONFIG:ConfigServerType = {
+    const CONFIG:ConfigServerType = {
       port: (ENV.PORT ? +ENV.PORT : 3000),
       mongo_uri: ENV.MONGO_URI || 'mongodb://localhost:27017/leantech'
     };
@@ -21,6 +25,6 @@ class Services {
     const Server = new SERVER(CONFIG);
     return Server.initiate().listen();
   };
-};
+}
 
 export default Services.server();

@@ -19,7 +19,7 @@ class Server {
     this.app    = new KOA();
     this.port   = config.port;
     this.config = config;
-  };
+  }
 
   protected use (middleware: KOA.Middleware): Server {
     this.app.use(middleware);
@@ -30,7 +30,7 @@ class Server {
     const Router = ROUTER.initiate();
     this.use(Router.router.middleware());
     return this;
-  };
+  }
 
   protected middleware ():Server {
     this.use(MIDDLEWARE.send);
@@ -47,21 +47,21 @@ class Server {
 
   protected db ():void {
     DB.connect({mongo_uri: this.config.mongo_uri});
-  };
+  }
 
   public initiate ():Server {
     this.db();
     this.middleware();
     this.router();
     return this;
-  };
+  }
 
   public listen ():KOA {
     this.app.listen(this.port);
     console.log(`Server is listening on port ${this.port}`);
     return this.app;
   }
-};
+}
 
 export default Server;
 

@@ -19,7 +19,7 @@ enum Responses {
   INTERNAL_ERROR       = 'An internal server has error occured',
   SOMETHING_WENT_WRONG = 'Something went wrong',
   OBJECT_NOT_FOUND     = 'Object was not found'
-};
+}
 
 /**
  * @remarks

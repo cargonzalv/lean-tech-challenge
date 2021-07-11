@@ -72,6 +72,6 @@ class SellRouter {
     },
     handler: [HELPER.validation, SELL_CONTROLLER.getAll]
   });
-};
+}
 
 export default SellRouter;
