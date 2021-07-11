@@ -3,40 +3,43 @@ import mongoose from 'mongoose';
 type toNormalizationFunction = () => PurchaseType;
 
 export type PurchaseDocument = mongoose.Document & {
-    fecha: Date,
-    cantidad: number,
-    idProducto: number,
-    nombreProducto: string,
-    toNormalization: toNormalizationFunction
+  fecha: Date;
+  cantidad: number;
+  idProducto: number;
+  nombreProducto: string;
+  toNormalization: toNormalizationFunction;
 };
 
 export type PurchaseType = {
-    id: string | null;
-    fecha: Date,
-    cantidad: number,
-    idProducto: number,
-    nombreProducto: string
+  id: string | null;
+  fecha: Date;
+  cantidad: number;
+  idProducto: number;
+  nombreProducto: string;
 };
 
-const purchaseSchema = new mongoose.Schema({
+const purchaseSchema = new mongoose.Schema(
+  {
     fecha: { type: Date },
     cantidad: { type: Number },
     idProducto: { type: Number },
-    nombreProducto: { type: String }
-}, { timestamps: false });
+    nombreProducto: { type: String },
+  },
+  { timestamps: false },
+);
 
 const toNormalization: toNormalizationFunction = function () {
-    const _purchaseObject: PurchaseDocument = this.toObject();
+  const _purchaseObject: PurchaseDocument = this.toObject();
 
-    const PurchaseObject: PurchaseType = {
-        id: _purchaseObject._id.toString(),
-        fecha: _purchaseObject.fecha,
-        cantidad: _purchaseObject.cantidad,
-        idProducto: _purchaseObject.idProducto,
-        nombreProducto: _purchaseObject.nombreProducto
-    };
+  const PurchaseObject: PurchaseType = {
+    id: _purchaseObject._id.toString(),
+    fecha: _purchaseObject.fecha,
+    cantidad: _purchaseObject.cantidad,
+    idProducto: _purchaseObject.idProducto,
+    nombreProducto: _purchaseObject.nombreProducto,
+  };
 
-    return PurchaseObject;
+  return PurchaseObject;
 };
 
 purchaseSchema.methods.toNormalization = toNormalization;

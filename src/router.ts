@@ -5,8 +5,8 @@ import PURCHASE_ROUTES from './router/purchase';
 import SELL_ROUTES from './router/sell';
 
 class Router {
-  public static initiate (): {router: ROUTER.Router} {
-    const router  = ROUTER();
+  public static initiate(): { router: ROUTER.Router } {
+    const router = ROUTER();
 
     router.route(HEALTH_ROUTES.read);
 
@@ -18,7 +18,7 @@ class Router {
     router.route(SELL_ROUTES.read);
     router.route(SELL_ROUTES.create);
 
-    return {router};
+    return { router };
   }
 }
 

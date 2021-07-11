@@ -1,10 +1,10 @@
-import {Joi as JOI, Spec } from 'koa-joi-router';
+import { Joi as JOI, Spec } from 'koa-joi-router';
 
 import HELPER from './helper';
 import HEALTH_CONTROLLER from '../controllers/health';
 
 class HealthRouter {
-  public static read:Spec = ({
+  public static read: Spec = {
     method: HELPER.methods.GET,
     path: '/health',
     handler: HEALTH_CONTROLLER.read,
@@ -18,13 +18,13 @@ class HealthRouter {
               status: JOI.string(),
               version: JOI.string(),
               timestamp: JOI.string().isoDate(),
-              uptime: JOI.number()
-            })
-          }).options({stripUnknown: true})
-        }
-      }
-    }
-  });
+              uptime: JOI.number(),
+            }),
+          }).options({ stripUnknown: true }),
+        },
+      },
+    },
+  };
 }
 
 export default HealthRouter;
