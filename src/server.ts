@@ -47,8 +47,8 @@ class Server {
     return this;
   }
 
-  protected db(): void {
-    DB.connect({ mongo_uri: this.config.mongo_uri });
+  public async db(): Promise<void> {
+    await DB.connect({ mongo_uri: this.config.mongo_uri });
   }
 
   public initiate(): Server {

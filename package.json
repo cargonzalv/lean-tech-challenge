@@ -8,7 +8,7 @@
     "dev": "docker compose up -d && nodemon ./src/index.ts",
     "lint": "eslint \"**/*.{ts,tsx}\" --quiet --fix",
     "start": "ts-node ./src/index.ts",
-    "test": "jest --forceExit --coverage"
+    "test": "jest --forceExit --coverage --silent --testTimeout=10000"
   },
   "husky": {
     "hooks": {
@@ -23,7 +23,6 @@
   },
   "dependencies": {
     "@koa/cors": "^3.1.0",
-    "bluebird": "^3.7.2",
     "koa": "^2.13.1",
     "koa-bodyparser": "^4.3.0",
     "koa-helmet": "^6.1.0",

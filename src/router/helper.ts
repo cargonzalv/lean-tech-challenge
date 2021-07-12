@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-types */
 import { Joi as JOI } from 'koa-joi-router';
 import { Context } from 'koa';
 
@@ -52,7 +53,7 @@ class Helper {
           code,
           error: JOI.object({
             message: JOI.string(),
-            detail: JOI.string(),
+            detail: JOI.string().optional(),
           }),
         },
       },

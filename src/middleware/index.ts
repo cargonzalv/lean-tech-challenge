@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-types */
 import { Middleware as KoaMiddleware } from 'koa';
 import { ModifiedContext, Responses } from './../types/';
 
@@ -23,12 +24,12 @@ class Middleware {
       if (error === true) {
         ctx.body = {
           code: ctx.status,
-          error: Array.isArray(body) ? body : { message: body, detail },
+          error: { message: body, detail },
         };
       } else {
         ctx.body = {
           code: ctx.status,
-          data: typeof body === 'object' ? body : Array.isArray(body) ? body : { message: body },
+          data: body,
         };
       }
 
@@ -44,8 +45,8 @@ class Middleware {
     } catch (err) {
       console.error(err.stack || err);
       let message = Responses.INTERNAL_ERROR;
-      if (Array.isArray(err?._original)) {
-        message = err?._original?.map((valErr) => "'" + valErr.message.replace(/\"\s/g, "' ").slice(1)).join(', ');
+      if (err._original && Array.isArray(err._original)) {
+        message = err._original?.map((valErr) => "'" + valErr.message.replace(/"\s/g, "' ").slice(1)).join(', ');
       }
       ctx.send(500, message);
     }

@@ -1,5 +1,13 @@
 import mongoose from 'mongoose';
 
+/**
+ * @param fecha - A valid Date that has already been validated by JOI
+ * @param cantidad - A valid number that has already been validated by JOI
+ * @param idProducto - A valid number that has already been validated by JOI
+ * @param nombreProducto - A valid string that has already been validated by JOI
+ */
+export type InputCreateBodyType = { fecha: Date; cantidad: number; idProducto: number; nombreProducto: string };
+
 type toNormalizationFunction = () => SellType;
 
 export type SellDocument = mongoose.Document & {

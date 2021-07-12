@@ -1,5 +1,4 @@
 import MONGOOSE from 'mongoose';
-import BLUEBIRD from 'bluebird';
 
 class Db {
   /**
@@ -7,8 +6,7 @@ class Db {
    * @returns Returns the mongo connection
    */
   public static connect = (config: { mongo_uri: string }) => {
-    (<any>MONGOOSE).Promise = BLUEBIRD;
-    return MONGOOSE.connect(config.mongo_uri, { useNewUrlParser: true, useCreateIndex: true })
+    return MONGOOSE.connect(config.mongo_uri, { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true })
       .then(() => console.log('Connected to MongoDB'))
       .catch((err) => {
         console.error(`MongoDB connection error. ${err}`);

@@ -1,31 +1,17 @@
 import { ModifiedContext, Responses } from './../types';
 
-import PurchaseModel, { PurchaseDocument, PurchaseType } from './../models/purchase';
-/**
- * @param fecha - A valid Date that has already been validated by JOI
- * @param cantidad - A valid number that has already been validated by JOI
- * @param idProducto - A valid number that has already been validated by JOI
- * @param nombreProducto - A valid string that has already been validated by JOI
- */
-type InputCreateBodyType = { fecha: Date; cantidad: number; idProducto: number; nombreProducto: string };
+import PurchaseModel, { PurchaseDocument, PurchaseType, InputCreateBodyType } from './../models/purchase';
 
 class PurchaseController {
   public static create = async (ctx: ModifiedContext) => {
     const body: InputCreateBodyType = ctx.request.body;
-    let detail = '';
-    const createPurchase: PurchaseDocument | null = await PurchaseModel.create(body).catch((err) => {
-      if (err.stack) {
-        console.error(err.stack);
-        detail = err.stack.split('\n')[0];
-      }
-      return null;
-    });
+    const createPurchase: PurchaseDocument | null = await PurchaseModel.create(body).catch(() => null);
 
     if (createPurchase) {
       const response: PurchaseType = createPurchase.toNormalization();
       return ctx.send(201, response);
     } else {
-      return ctx.send(400, Responses.CANT_CREATE_PURCHASE, detail);
+      return ctx.send(400, Responses.CANT_CREATE_PURCHASE);
     }
   };
 
@@ -52,36 +38,30 @@ class PurchaseController {
   };
 
   public static findByProduct = async (productId: number, fecha: Date) => {
+    const purchase = await PurchaseModel.find({
+      idProducto: productId,
+      fecha: {
+        $lte: fecha, // We just care about purchase orders registered before or on the sell order date
+      },
+      cantidad: {
+        $gte: 0,
+      },
+    }).sort({ fecha: 1 });
+    const response: PurchaseType[] = purchase?.map((p) => p.toNormalization());
+    return response;
+  };
+
+  public static updatePurchase = async (purchaseId: string, newPurchase: InputCreateBodyType) => {
     try {
-      const purchase = await PurchaseModel.find({
-        idProducto: productId,
-        fecha: {
-          $lte: fecha, // We just care about purchase orders registered before or on the sell order date
-        },
-        cantidad: {
-          $gte: 0,
-        },
-      }).sort({ fecha: 1 });
-      const response: PurchaseType[] = purchase?.map((p) => p.toNormalization());
+      const updatePurchase: PurchaseDocument | null = await PurchaseModel.findByIdAndUpdate(purchaseId, newPurchase, {
+        useFindAndModify: false,
+      });
+
+      const response: PurchaseType = updatePurchase?.toNormalization();
       return response;
     } catch (err) {
       return null;
     }
-  };
-
-  public static updatePurchase = async (purchaseId: string, newPurchase: InputCreateBodyType) => {
-    const updatePurchase: PurchaseDocument | null = await PurchaseModel.findByIdAndUpdate(
-      purchaseId,
-      newPurchase,
-    ).catch((err) => {
-      console.error(err);
-      return null;
-    });
-
-    console.log(updatePurchase);
-
-    const response: PurchaseType = updatePurchase?.toNormalization();
-    return response;
   };
 }
 
