@@ -5,7 +5,7 @@
   "main": "dist/src/index.js",
   "scripts": {
     "build": "tsc --sourceMap -p ./",
-    "dev": "docker compose -p mongo-lean-tech-challenge up -d && nodemon ./src/index.ts",
+    "dev": "nodemon -L ./src/index.ts",
     "lint": "eslint \"**/*.{ts,tsx}\" --quiet --fix",
     "start": "ts-node ./src/index.ts",
     "test": "jest --forceExit --coverage --silent --testTimeout=10000"
@@ -23,6 +23,7 @@
   },
   "dependencies": {
     "@koa/cors": "^3.1.0",
+    "dotenv": "^10.0.0",
     "koa": "^2.13.1",
     "koa-bodyparser": "^4.3.0",
     "koa-helmet": "^6.1.0",
@@ -51,7 +52,6 @@
     "@types/supertest": "^2.0.11",
     "@typescript-eslint/eslint-plugin": "^4.28.2",
     "@typescript-eslint/parser": "^4.28.2",
-    "dotenv": "^10.0.0",
     "eslint": "^7.30.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^3.4.0",

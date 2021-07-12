@@ -15,6 +15,8 @@ RUN yarn
 COPY ./src/ $SOURCE/src/
 
 EXPOSE ${PORT} ${PORT}
-EXPOSE 27017 27017
 
-CMD [ "yarn", "dev" ]
+ENV TS_NODE=${SOURCE}/node_modules/.bin/ts-node
+ENV TS_EXEC=${SOURCE}/src/index.ts
+
+CMD $TS_NODE $TS_EXEC
