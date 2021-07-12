@@ -5,7 +5,7 @@
   "main": "dist/src/index.js",
   "scripts": {
     "build": "tsc --sourceMap -p ./",
-    "dev": "docker compose up -d && nodemon ./src/index.ts",
+    "dev": "docker compose -p mongo-lean-tech-challenge up -d && nodemon ./src/index.ts",
     "lint": "eslint \"**/*.{ts,tsx}\" --quiet --fix",
     "start": "ts-node ./src/index.ts",
     "test": "jest --forceExit --coverage --silent --testTimeout=10000"

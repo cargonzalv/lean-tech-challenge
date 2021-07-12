@@ -59,7 +59,7 @@ class Server {
   }
 
   public listen(): KOA {
-    this.app.listen(this.port);
+    this.app.listen(this.port, '0.0.0.0');
     console.log(`Server is listening on port ${this.port}`);
     return this.app;
   }

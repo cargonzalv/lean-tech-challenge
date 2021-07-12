@@ -1,0 +1,1 @@
+docker run --name lean-tech-challenge -it -p 3000:3000 lean-tech-challenge
